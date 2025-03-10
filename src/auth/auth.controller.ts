@@ -7,19 +7,15 @@ import {
   Res,
   Logger,
   BadRequestException,
-} from '@nestjs/common';
-import { Response } from 'express';
-import { AuthService } from './auth.service';
-import { ConfigService } from '@nestjs/config';
+} from '@nestjs/common'
+import { Response } from 'express'
+import { AuthService } from './auth.service'
 
 @Controller('my-wave')
 export class AuthController {
-  private readonly logger = new Logger(AuthController.name);
+  private readonly logger = new Logger(AuthController.name)
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   /**
    * Эндпоинт для начала авторизации
@@ -31,19 +27,17 @@ export class AuthController {
     @Query('debug') debug?: string,
   ) {
     if (!userId) {
-      throw new BadRequestException('UserId is required');
+      throw new BadRequestException('UserId is required')
     }
 
-    // Включаем лог для отладки, если передан параметр debug
     if (debug) {
-      this.logger.debug(`Инициирование авторизации для пользователя ${userId}`);
+      this.logger.debug(`Инициирование авторизации для пользователя ${userId}`)
     }
 
-    // Передаем userId как state параметр
-    const authUrl = this.authService.generateAuthUrl(userId);
-    this.logger.log(`Генерация URL авторизации: ${authUrl}`);
+    const authUrl = this.authService.generateAuthUrl(userId)
+    this.logger.log(`Генерация URL авторизации: ${authUrl}`)
 
-    return { url: authUrl };
+    return { url: authUrl }
   }
 
   /**
@@ -57,42 +51,38 @@ export class AuthController {
     @Query() allParams: Record<string, string>,
     @Res() res: Response,
   ) {
-    // Логируем все параметры для отладки
-    this.logger.debug('Получен callback с параметрами:', allParams);
+    this.logger.debug('Получен callback с параметрами:', allParams)
 
     if (!code) {
-      this.logger.error('Код авторизации отсутствует');
-      return res.status(400).send('Код авторизации не предоставлен');
+      this.logger.error('Код авторизации отсутствует')
+      return res.status(400).send('Код авторизации не предоставлен')
     }
 
     try {
-      this.logger.log(`Получен код авторизации для пользователя ${userId}`);
+      this.logger.log(`Получен код авторизации для пользователя ${userId}`)
 
-      // Получаем токен по коду
-      const tokenData = await this.authService.getTokenByCode(code);
-      this.logger.debug('Получен токен доступа');
+      const tokenData = await this.authService.getTokenByCode(code)
+      this.logger.debug('Получен токен доступа')
 
-      // Получаем информацию о пользователе
       const userInfo = await this.authService.getUserInfo(
         tokenData.access_token,
-      );
+      )
       this.logger.debug(
         `Получена информация о пользователе Яндекса: ${userInfo.display_name}`,
-      );
+      )
 
-      // Отправляем токен Discord боту
-      this.logger.log(`Отправляем информацию боту для пользователя ${userId}`);
+      this.logger.log(`Отправляем информацию боту для пользователя ${userId}`)
       const success = await this.authService.sendTokenToBot(
         userId,
         tokenData.access_token,
         userInfo,
-      );
+      )
 
+      // Мне лень было писать отдельный микро проект под странички редиректов, и не надо меня осуждать, перепишу как основной код бота будет готов
       if (success) {
-        this.logger.log('Токен успешно отправлен Discord боту');
-        // Возвращаем страницу успеха с инструкцией закрыть окно и вернуться в Discord
+        this.logger.log('Токен успешно отправлен Discord боту')
         return res.send(`
-          <html>
+          <html lang="en">
             <head>
               <title>Авторизация успешна</title>
               <style>
@@ -152,11 +142,11 @@ export class AuthController {
               </div>
             </body>
           </html>
-        `);
+        `)
       } else {
-        this.logger.error('Не удалось отправить токен боту Discord');
+        this.logger.error('Не удалось отправить токен боту Discord')
         return res.status(500).send(`
-          <html>
+          <html lang="en">
             <head>
               <title>Ошибка авторизации</title>
               <style>
@@ -213,15 +203,15 @@ export class AuthController {
               </div>
             </body>
           </html>
-        `);
+        `)
       }
     } catch (error) {
       this.logger.error(
         `Ошибка при обработке callback: ${error.message}`,
         error.stack,
-      );
+      )
       return res.status(500).send(`
-        <html>
+        <html lang="en">
           <head>
             <title>Ошибка авторизации</title>
             <style>
@@ -289,7 +279,7 @@ export class AuthController {
             </div>
           </body>
         </html>
-      `);
+      `)
     }
   }
 }

@@ -1,8 +1,8 @@
 {
   "name": "ympb-api",
-  "version": "0.1.1",
-  "description": "",
-  "author": "",
+  "version": "0.1.2",
+  "description": "Simple api to work with Yandex OAUTH",
+  "author": "Crosbic",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
