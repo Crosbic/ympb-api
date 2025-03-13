@@ -14,11 +14,7 @@ export interface YandexUserInfo {
   first_name: string
   last_name: string
   sex: string
-  default_email: string
-  emails: string[]
-  birthday: string
-  default_phone: {
-    id: number
-    number: string
-  }
+  default_avatar_id: string
+  is_avatar_empty: boolean
+  psuid: string
 }

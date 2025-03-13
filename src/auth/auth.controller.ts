@@ -42,9 +42,9 @@ export class AuthController {
 
   /**
    * Обработчик callback от Яндекса после авторизации
-   * Локальный URI для разработки: http://localhost:3000/my-wave/success-auth
+   * Локальный URI для разработки: http://localhost:3000/my-wave/auth-result
    */
-  @Get('success-auth')
+  @Get('auth-result')
   async handleAuthCallback(
     @Query('code') code: string,
     @Query('state') userId: string,
@@ -68,7 +68,7 @@ export class AuthController {
         tokenData.access_token,
       )
       this.logger.debug(
-        `Получена информация о пользователе Яндекса: ${userInfo.display_name}`,
+        `Получена информация о пользователе Яндекса: ${JSON.stringify(userInfo)}`,
       )
 
       this.logger.log(`Отправляем информацию боту для пользователя ${userId}`)
@@ -83,8 +83,8 @@ export class AuthController {
         this.logger.log('Токен успешно отправлен Discord боту')
         return res.send(`
           <html lang="en">
-            <head>
-              <title>Авторизация успешна</title>
+            <head > 
+              <title>My Wave: yandex music discord bot</title>
               <style>
                 body { 
                   font-family: Arial, sans-serif;
@@ -109,13 +109,14 @@ export class AuthController {
                   font-size: 18px;
                   margin-bottom: 20px;
                   line-height: 1.5;
-                }
-                .user-info {
                   background-color: #e8f5e9;
                   padding: 15px;
                   border-radius: 5px;
-                  text-align: left;
-                  margin-bottom: 20px;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+                  gap: 1em;
                 }
                 .close-button {
                   background-color: #4caf50;
@@ -126,17 +127,19 @@ export class AuthController {
                   border-radius: 4px;
                   cursor: pointer;
                 }
+                .avatar {
+                  border-radius: 50%;
+                }
               </style>
+            <link rel="icon" type="image/png" href="/favicon.png" class="avatar">
             </head>
             <body>
               <div class="container">
                 <div class="success">Авторизация в Яндексе успешно завершена!</div>
                 <div class="info">
-                  Вы вошли в аккаунт <strong>${userInfo.display_name || userInfo.real_name || userInfo.login}</strong>.
-                  <br/>Теперь вы можете закрыть это окно и вернуться в Discord.
-                </div>
-                <div class="user-info">
-                  <p><strong>Email:</strong> ${userInfo.default_email || 'Не указан'}</p>
+                  <img alt="Yandex avatar" class="avatar" src="https://avatars.mds.yandex.net/get-yapic/${userInfo.default_avatar_id}/islands-retina-50" />
+                  <div>Вы вошли в аккаунт <strong>${userInfo.display_name || userInfo.real_name || userInfo.login}</strong>.</div>
+                  <div>Теперь вы можете закрыть это окно и вернуться в Discord.</div>
                 </div>
                 <button class="close-button" onclick="window.close()">Закрыть окно</button>
               </div>
@@ -148,7 +151,7 @@ export class AuthController {
         return res.status(500).send(`
           <html lang="en">
             <head>
-              <title>Ошибка авторизации</title>
+              <title>My Wave: yandex music discord bot</title>
               <style>
                 body { 
                   font-family: Arial, sans-serif;
@@ -213,7 +216,7 @@ export class AuthController {
       return res.status(500).send(`
         <html lang="en">
           <head>
-            <title>Ошибка авторизации</title>
+            <title>My Wave: yandex music discord bot</title>
             <style>
               body { 
                 font-family: Arial, sans-serif;
@@ -268,6 +271,7 @@ export class AuthController {
                 cursor: pointer;
               }
             </style>
+            <link rel="icon" type="image/png" href="/favicon.png">
           </head>
           <body>
             <div class="container">

@@ -144,11 +144,10 @@ export class AuthService {
         accessToken,
         userInfo: {
           id: userInfo.id,
-          displayName:
-            userInfo.display_name || userInfo.real_name || userInfo.login,
-          email: userInfo.default_email,
+          fullName: userInfo.real_name,
           firstName: userInfo.first_name,
           lastName: userInfo.last_name,
+          avatarUrl: userInfo.default_avatar_id,
         },
       }
 
