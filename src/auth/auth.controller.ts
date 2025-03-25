@@ -67,11 +67,17 @@ export class AuthController {
       const userInfo = await this.authService.getUserInfo(
         tokenData.access_token,
       )
+
       this.logger.debug(
         `Получена информация о пользователе Яндекса: ${JSON.stringify(userInfo)}`,
       )
 
+      this.logger.debug(`Токен: ${JSON.stringify(tokenData.access_token)}`)
+
       this.logger.log(`Отправляем информацию боту для пользователя ${userId}`)
+
+      this.logger.log(userInfo)
+
       const success = await this.authService.sendTokenToBot(
         userId,
         tokenData.access_token,
@@ -131,7 +137,7 @@ export class AuthController {
                   border-radius: 50%;
                 }
               </style>
-            <link rel="icon" type="image/png" href="/favicon.png" class="avatar">
+            <link rel="icon" type="image/png" href="/favicon.png">
             </head>
             <body>
               <div class="container">

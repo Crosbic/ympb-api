@@ -147,6 +147,7 @@ export class AuthService {
           fullName: userInfo.real_name,
           firstName: userInfo.first_name,
           lastName: userInfo.last_name,
+          nickName: userInfo.display_name,
           avatarUrl: userInfo.default_avatar_id,
         },
       }
