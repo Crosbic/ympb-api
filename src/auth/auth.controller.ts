@@ -76,8 +76,6 @@ export class AuthController {
 
       this.logger.log(`Отправляем информацию боту для пользователя ${userId}`)
 
-      this.logger.log(userInfo)
-
       const success = await this.authService.sendTokenToBot(
         userId,
         tokenData.access_token,
@@ -202,11 +200,14 @@ export class AuthController {
                   cursor: pointer;
                 }
               </style>
+              <link rel="icon" type="image/png" href="/favicon.png">
             </head>
             <body>
               <div class="container">
                 <div class="error">Ошибка при авторизации</div>
-                <div class="info">Не удалось отправить токен боту Discord. Пожалуйста, проверьте, что бот запущен и доступен.</div>
+                <div class="info">Не удалось отправить токен боту Discord.</div>
+                <div class="info">Скорее всего на вашем аккаунте отсутствует активная подписка Яндекс Плюс.</div>
+                <div class="info">Если это не так, сообщите о проблеме на почту: contact@crosbic.ru</div>
                 <button class="retry-button" onclick="window.location.href='/my-wave/auth?userId=${userId}'">Попробовать снова</button>
                 <button class="close-button" onclick="window.close()">Закрыть окно</button>
               </div>
