@@ -1,11 +1,13 @@
-FROM node:lts-alpine
+FROM node:22-alpine
+
+WORKDIR /app
 
 COPY . .
 
-RUN yarn
+RUN npm install
 
-RUN yarn build
+RUN npm run build
 
 EXPOSE 8600
 
-ENTRYPOINT ["yarn", "start:prod"]
+ENTRYPOINT ["npm", "run", "start:prod"]
