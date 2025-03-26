@@ -46,6 +46,7 @@ jobs:
         run: |
           echo YANDEX_CLIENT_ID=${{ secrets.YANDEX_CLIENT_ID }} >> .env
           echo YANDEX_CLIENT_SECRET=${{ secrets.YANDEX_CLIENT_SECRET }} >> .env
+          echo YANDEX_REDIRECT_URI=${{ secrets.YANDEX_REDIRECT_URI }} >> .env
 
       - name: Login to Github Package Registry
         uses: docker/login-action@v3
