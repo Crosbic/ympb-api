@@ -1,4 +1,4 @@
-FROM node:lts
+FROM node:lts-alpine
 
 COPY . .
 
@@ -6,6 +6,6 @@ RUN yarn
 
 RUN yarn build
 
-EXPOSE 3000
+EXPOSE 8600
 
 ENTRYPOINT ["yarn", "start:prod"]
