@@ -1,8 +1,10 @@
-FROM node:22-alpine
+FROM node:lts
 
 COPY . .
 
 RUN yarn
+
+RUN yarn build
 
 EXPOSE 3000
 
