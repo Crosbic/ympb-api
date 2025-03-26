@@ -1,6 +1,6 @@
 {
   "name": "ympb-api",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Simple api to work with Yandex OAUTH",
   "author": "Crosbic",
   "private": true,

@@ -1,7 +1,5 @@
-// src/main.ts
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
-import { ConfigService } from '@nestjs/config'
 import { Logger } from '@nestjs/common'
 
 async function bootstrap() {
@@ -15,11 +13,8 @@ async function bootstrap() {
     credentials: true,
   })
 
-  const configService = app.get(ConfigService)
-  const port = configService.get<number>('PORT') || 3000
-
-  await app.listen(port)
-  Logger.log(`Сервер запущен на порту ${port}`)
+  await app.listen(3000)
+  Logger.log(`Сервер запущен на порту 3000`)
 }
 
 bootstrap()
