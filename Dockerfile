@@ -19,6 +19,4 @@ RUN yarn install --production && yarn cache clean
 
 COPY --from=builder /build/dist ./dist
 
-COPY .env ./
-
 CMD [ "node", "dist/main.js" ]
