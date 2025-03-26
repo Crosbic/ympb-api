@@ -1,13 +1,22 @@
-FROM node:22-alpine
+FROM node:lts-alpine AS builder
 
-WORKDIR /app
+WORKDIR /build
 
 COPY . .
 
-RUN npm install
+RUN yarn install && yarn build
 
-RUN npm run build
+FROM node:lts-slim
 
-EXPOSE 8600
+ENV NODE_ENV production
+USER node
 
-ENTRYPOINT ["npm", "run", "start:prod"]
+WORKDIR /app
+
+COPY package.json ./
+
+RUN yarn install --production && yarn cache clean
+
+COPY --from=builder /build/dist ./dist
+
+CMD [ "node", "dist/main.js" ]
