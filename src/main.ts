@@ -17,12 +17,9 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService)
   const port = configService.get<number>('PORT') || 3000
-  const domain = configService.get<string>('IP') || '0.0.0.0'
 
-  await app.listen(port, domain)
-  Logger.log(`Сервер запущен на ${domain}:${port}`)
-  Logger.log(
-    `URL для авторизации: ${domain}:${port}/my-wave/auth?userId=YOUR_USER_ID`,
-  )
+  await app.listen(port)
+  Logger.log(`Сервер запущен на порту ${port}`)
 }
+
 bootstrap()
